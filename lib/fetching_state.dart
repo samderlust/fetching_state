@@ -2,12 +2,24 @@ library fetching_state;
 
 import 'package:flutter/material.dart';
 
+/// The predefined states when fetching data
 enum FetchingStatus { init, loading, done, error }
 
+/// FetchingState allow you to handle UI base on the current state of data fetching
 class FetchingState<T, E> {
+  /// fetching status [FetchingStatus]
   final FetchingStatus fetchingStatus;
+
+  /// data that pass to `onDone`
+  ///
+  /// useage: `FetchingState.done({T? data})`
   final T? data;
+
+  /// data that pass to `onError`
+  ///
+  /// useage: `FetchingState.error({E? error})`
   final E? error;
+
   FetchingState({
     this.data,
     this.error,
@@ -22,15 +34,25 @@ class FetchingState<T, E> {
     );
   }
 
+  /// Create new FetchingState instance, default status to [FetchingStatus.init]
   factory FetchingState.init() =>
       FetchingState(fetchingStatus: FetchingStatus.init);
+
+  /// Create new FetchingState instance, default status to [FetchingStatus.loading]
   factory FetchingState.loading() =>
       FetchingState(fetchingStatus: FetchingStatus.loading);
+
+  /// Create new FetchingState instance, default status to [FetchingStatus.done]
   factory FetchingState.done({T? data}) =>
       FetchingState(fetchingStatus: FetchingStatus.done, data: data);
+
+  /// Create new FetchingState instance, default status to [FetchingStatus.error]
   factory FetchingState.error({E? error}) =>
       FetchingState(fetchingStatus: FetchingStatus.error, error: error);
 
+  /// Declare what which Widget should be return base on [fetchingStatus]
+  ///
+  /// Allow to skip some method that you don't need or some methods return a same widget,  use [orElse] instead
   Widget whenOrElse({
     Widget Function()? onLoading,
     Widget Function(T? data)? onDone,
@@ -52,6 +74,9 @@ class FetchingState<T, E> {
     }
   }
 
+  /// Declare which Widget should be return base on [fetchingStatus]
+  ///
+  /// all state methods are required
   Widget when({
     required Widget Function() onLoading,
     required Widget Function(T? data) onDone,
