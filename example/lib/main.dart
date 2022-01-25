@@ -1,7 +1,11 @@
+import 'package:fetching_state/fetching_state.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(child: MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -11,82 +15,115 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Fetchin State Example',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        textTheme: const TextTheme(
+          bodyText2: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const Example(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+class Example extends StatefulWidget {
+  const Example({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _ExampleState createState() => _ExampleState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _ExampleState extends State<Example> {
+  late FetchingState<String, String> _fetching;
+  @override
+  void initState() {
+    _fetching = FetchingState.init();
+    super.initState();
+  }
 
-  void _incrementCounter() {
+  Future<void> getDone() async {
     setState(() {
-      _counter++;
+      _fetching = FetchingState.loading();
+    });
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    setState(() {
+      _fetching = FetchingState.done(data: 'DONE IN STATE');
+    });
+  }
+
+  Future<void> getError() async {
+    setState(() {
+      _fetching = FetchingState.loading();
+    });
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    setState(() {
+      _fetching = FetchingState.error(error: 'Error IN STATE');
+    });
+  }
+
+  Future<void> getInit() async {
+    setState(() {
+      _fetching = FetchingState.loading();
+    });
+    await Future.delayed(const Duration(milliseconds: 500));
+    setState(() {
+      _fetching = FetchingState.init();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: SafeArea(
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
+          mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          children: [
+            Center(
+              child: Builder(
+                builder: (context) {
+                  return _fetching.when(
+                    onInit: () => const Text(
+                      'INIT',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                    onDone: (text) => Text(
+                      text!,
+                      style: const TextStyle(color: Colors.green),
+                    ),
+                    onError: (error) => Text(
+                      error!,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                    onLoading: () => const CircularProgressIndicator(),
+                  );
+                },
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            const SizedBox(
+              height: 40,
+            ),
+            ElevatedButton(
+              onPressed: getDone,
+              child: const Text('Done'),
+            ),
+            ElevatedButton(
+              onPressed: getError,
+              child: const Text('Error'),
+            ),
+            ElevatedButton(
+              onPressed: getInit,
+              child: const Text('Init'),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

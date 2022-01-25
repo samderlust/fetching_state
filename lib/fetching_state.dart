@@ -26,29 +26,47 @@ class FetchingState<T, E> {
       FetchingState(fetchingStatus: FetchingStatus.init);
   factory FetchingState.loading() =>
       FetchingState(fetchingStatus: FetchingStatus.loading);
-  factory FetchingState.done(T data) =>
+  factory FetchingState.done({T? data}) =>
       FetchingState(fetchingStatus: FetchingStatus.done, data: data);
-  factory FetchingState.error(E error) =>
+  factory FetchingState.error({E? error}) =>
       FetchingState(fetchingStatus: FetchingStatus.error, error: error);
 
-  Widget when({
+  Widget whenOrElse({
     Widget Function()? onLoading,
     Widget Function(T? data)? onDone,
     Widget Function(E? error)? onError,
-    Widget Function()? oninit,
-    required Widget Function() orElse,
+    Widget Function()? onInit,
+    required Widget Function()? orElse,
   }) {
     switch (fetchingStatus) {
       case FetchingStatus.init:
-        return oninit == null ? orElse() : oninit();
+        return onInit == null ? orElse!() : onInit();
       case FetchingStatus.loading:
-        return onLoading == null ? orElse() : onLoading();
+        return onLoading == null ? orElse!() : onLoading();
       case FetchingStatus.done:
-        return onDone == null ? orElse() : onDone(data);
+        return onDone == null ? orElse!() : onDone(data);
       case FetchingStatus.error:
-        return onError == null ? orElse() : onError(error);
+        return onError == null ? orElse!() : onError(error);
       default:
-        return orElse();
+        return orElse!();
+    }
+  }
+
+  Widget when({
+    required Widget Function() onLoading,
+    required Widget Function(T? data) onDone,
+    required Widget Function(E? error) onError,
+    required Widget Function() onInit,
+  }) {
+    switch (fetchingStatus) {
+      case FetchingStatus.init:
+        return onInit();
+      case FetchingStatus.loading:
+        return onLoading();
+      case FetchingStatus.done:
+        return onDone(data);
+      case FetchingStatus.error:
+        return onError(error);
     }
   }
 
