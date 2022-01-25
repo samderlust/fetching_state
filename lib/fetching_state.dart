@@ -2,7 +2,7 @@ library fetching_state;
 
 import 'package:flutter/material.dart';
 
-enum FetchingStatus { INIT, LOADING, DONE, ERROR }
+enum FetchingStatus { init, loading, done, error }
 
 class FetchingState<T, E> {
   final FetchingStatus fetchingStatus;
@@ -23,29 +23,29 @@ class FetchingState<T, E> {
   }
 
   factory FetchingState.init() =>
-      FetchingState(fetchingStatus: FetchingStatus.INIT);
+      FetchingState(fetchingStatus: FetchingStatus.init);
   factory FetchingState.loading() =>
-      FetchingState(fetchingStatus: FetchingStatus.LOADING);
+      FetchingState(fetchingStatus: FetchingStatus.loading);
   factory FetchingState.done(T data) =>
-      FetchingState(fetchingStatus: FetchingStatus.DONE, data: data);
+      FetchingState(fetchingStatus: FetchingStatus.done, data: data);
   factory FetchingState.error(E error) =>
-      FetchingState(fetchingStatus: FetchingStatus.ERROR, error: error);
+      FetchingState(fetchingStatus: FetchingStatus.error, error: error);
 
   Widget when({
     Widget Function()? onLoading,
     Widget Function(T? data)? onDone,
     Widget Function(E? error)? onError,
-    Widget Function()? onInit,
+    Widget Function()? oninit,
     required Widget Function() orElse,
   }) {
     switch (fetchingStatus) {
-      case FetchingStatus.INIT:
-        return onInit == null ? orElse() : onInit();
-      case FetchingStatus.LOADING:
+      case FetchingStatus.init:
+        return oninit == null ? orElse() : oninit();
+      case FetchingStatus.loading:
         return onLoading == null ? orElse() : onLoading();
-      case FetchingStatus.DONE:
+      case FetchingStatus.done:
         return onDone == null ? orElse() : onDone(data);
-      case FetchingStatus.ERROR:
+      case FetchingStatus.error:
         return onError == null ? orElse() : onError(error);
       default:
         return orElse();
