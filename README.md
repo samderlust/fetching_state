@@ -40,15 +40,61 @@ import 'package:fetching_state/fetching_state.dart';
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+see full example in `example` folder
 
-```dart
-const like = 'sample';
+```
+class Example extends StatefulWidget {
+  const Example({Key? key}) : super(key: key);
+
+  @override
+  _ExampleState createState() => _ExampleState();
+}
+
+class _ExampleState extends State<Example> {
+  late FetchingState<String, String> _fetching;
+  @override
+  void initState() {
+    _fetching = FetchingState.init();
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Builder(
+                builder: (context) {
+                  return _fetching.when(
+                    onInit: () => const Text(
+                      'INIT',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                    onDone: (text) => Text(
+                      text!,
+                      style: const TextStyle(color: Colors.green),
+                    ),
+                    onError: (error) => Text(
+                      error!,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                    onLoading: () => const CircularProgressIndicator(),
+                  );
+                },
+              ),
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
+}
 ```
 
-## Additional information
+## Appreciate Your Feedbacks
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+If you find anything need to be improve or want to request a feature. Please go ahead and create an issue in the [Github](https://github.com/samderlust/fetching_state) repo
