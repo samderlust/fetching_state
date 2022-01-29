@@ -96,16 +96,16 @@ class FetchingState<T, E> {
   }
 
   /// Shortcurt for checking if current status is done
-  bool isDone() => fetchingStatus == FetchingStatus.done;
+  bool get isDone => fetchingStatus == FetchingStatus.done;
 
   /// Shortcurt for checking if current status is init
-  bool isInit() => fetchingStatus == FetchingStatus.init;
+  bool get isInit => fetchingStatus == FetchingStatus.init;
 
   /// Shortcurt for checking if current status is loading
-  bool isLoading() => fetchingStatus == FetchingStatus.loading;
+  bool get isLoading => fetchingStatus == FetchingStatus.loading;
 
   /// Shortcurt for checking if current status is error
-  bool isError() => fetchingStatus == FetchingStatus.error;
+  bool get isError => fetchingStatus == FetchingStatus.error;
 
   @override
   bool operator ==(Object other) {

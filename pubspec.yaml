@@ -1,6 +1,6 @@
 name: fetching_state
-description: A new Flutter package project.
-version: 0.0.5
+description: A small package that helps easily to work with UI changes base on the state of fetching remote data
+version: 0.0.6
 homepage: https://github.com/samderlust/fetching_state
 
 environment:
