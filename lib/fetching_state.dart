@@ -95,6 +95,18 @@ class FetchingState<T, E> {
     }
   }
 
+  /// Shortcurt for checking if current status is done
+  bool isDone() => fetchingStatus == FetchingStatus.done;
+
+  /// Shortcurt for checking if current status is init
+  bool isInit() => fetchingStatus == FetchingStatus.init;
+
+  /// Shortcurt for checking if current status is loading
+  bool isLoading() => fetchingStatus == FetchingStatus.loading;
+
+  /// Shortcurt for checking if current status is error
+  bool isError() => fetchingStatus == FetchingStatus.error;
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
@@ -106,5 +118,6 @@ class FetchingState<T, E> {
   int get hashCode => fetchingStatus.hashCode;
 
   @override
-  String toString() => 'FetchingState(fetchingStatus: $fetchingStatus)';
+  String toString() =>
+      'FetchingState(fetchingStatus: $fetchingStatus, data: $data, error: $error)';
 }
