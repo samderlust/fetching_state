@@ -1,3 +1,7 @@
+## 0.0.6
+
+- changing [`isDone`, `isInit`, `isLoading`, `isError`] to getters
+
 ## 0.0.5
 
 - adding bool shortcut methods [`isDone`, `isInit`, `isLoading`, `isError`]
