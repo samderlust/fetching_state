@@ -1,3 +1,8 @@
+## 0.0.7
+
+- change to make return type more flexible.
+- return Widget is not the case anymore.
+
 ## 0.0.6
 
 - changing [`isDone`, `isInit`, `isLoading`, `isError`] to getters
