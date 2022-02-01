@@ -87,7 +87,7 @@ class _ExampleState extends State<Example> {
             Center(
               child: Builder(
                 builder: (context) {
-                  return _fetching.when<Widget>(
+                  return _fetching.when(
                     onInit: () => const Text(
                       'INIT',
                       style: TextStyle(color: Colors.blue),

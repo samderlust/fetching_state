@@ -1,3 +1,8 @@
+## 0.0.8
+
+- `whenOrElse` and `when` return Widgets
+- `mapOrElse` and `map` return whatever type you want.
+
 ## 0.0.7
 
 - change to make return type more flexible.

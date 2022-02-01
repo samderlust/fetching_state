@@ -1,5 +1,7 @@
 library fetching_state;
 
+import 'package:flutter/material.dart';
+
 /// The predefined states when fetching data
 enum FetchingStatus { init, loading, done, error }
 
@@ -48,10 +50,55 @@ class FetchingState<T, E> {
   factory FetchingState.error({E? error}) =>
       FetchingState(fetchingStatus: FetchingStatus.error, error: error);
 
+  /// Declare methods that return widgets base on [fetchingStatus]
+  ///
+  /// Allow to use [orElse], skip some methods that you don't need.
+  Widget whenOrElse({
+    Widget Function()? onLoading,
+    Widget Function(T? data)? onDone,
+    Widget Function(E? error)? onError,
+    Widget Function()? onInit,
+    required Widget Function()? orElse,
+  }) {
+    switch (fetchingStatus) {
+      case FetchingStatus.init:
+        return onInit == null ? orElse!() : onInit();
+      case FetchingStatus.loading:
+        return onLoading == null ? orElse!() : onLoading();
+      case FetchingStatus.done:
+        return onDone == null ? orElse!() : onDone(data);
+      case FetchingStatus.error:
+        return onError == null ? orElse!() : onError(error);
+      default:
+        return orElse!();
+    }
+  }
+
+  /// Declare methods base on [fetchingStatus] that return widgets
+  ///
+  /// all state methods are required
+  Widget when({
+    required Widget Function() onLoading,
+    required Widget Function(T? data) onDone,
+    required Widget Function(E? error) onError,
+    required Widget Function() onInit,
+  }) {
+    switch (fetchingStatus) {
+      case FetchingStatus.init:
+        return onInit();
+      case FetchingStatus.loading:
+        return onLoading();
+      case FetchingStatus.done:
+        return onDone(data);
+      case FetchingStatus.error:
+        return onError(error);
+    }
+  }
+
   /// Declare methods that return [R] base on [fetchingStatus]
   ///
   /// Allow to use [orElse], skip some methods that you don't need.
-  R whenOrElse<R>({
+  R mapOrElse<R>({
     R Function()? onLoading,
     R Function(T? data)? onDone,
     R Function(E? error)? onError,
@@ -76,7 +123,7 @@ class FetchingState<T, E> {
   ///
   /// all state methods are required
   /// return type [R] need to be the same on all methods
-  R when<R>({
+  R map<R>({
     required R Function() onLoading,
     required R Function(T? data) onDone,
     required R Function(E? error) onError,
