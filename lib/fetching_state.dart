@@ -43,11 +43,11 @@ class FetchingState<T, E> {
       FetchingState(fetchingStatus: FetchingStatus.loading);
 
   /// Create new FetchingState instance, default status to [FetchingStatus.done]
-  factory FetchingState.done({T? data}) =>
+  factory FetchingState.done([T? data]) =>
       FetchingState(fetchingStatus: FetchingStatus.done, data: data);
 
   /// Create new FetchingState instance, default status to [FetchingStatus.error]
-  factory FetchingState.error({E? error}) =>
+  factory FetchingState.error([E? error]) =>
       FetchingState(fetchingStatus: FetchingStatus.error, error: error);
 
   /// Declare methods that return widgets base on [fetchingStatus]
@@ -141,16 +141,16 @@ class FetchingState<T, E> {
     }
   }
 
-  /// Shortcurt for checking if current status is done
+  /// Shortcut for checking if current status is done
   bool get isDone => fetchingStatus == FetchingStatus.done;
 
-  /// Shortcurt for checking if current status is init
+  /// Shortcut for checking if current status is init
   bool get isInit => fetchingStatus == FetchingStatus.init;
 
-  /// Shortcurt for checking if current status is loading
+  /// Shortcut for checking if current status is loading
   bool get isLoading => fetchingStatus == FetchingStatus.loading;
 
-  /// Shortcurt for checking if current status is error
+  /// Shortcut for checking if current status is error
   bool get isError => fetchingStatus == FetchingStatus.error;
 
   @override

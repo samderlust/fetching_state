@@ -1,3 +1,8 @@
+## 1.0.0
+
+- Remove named parameters
+- Fix typos
+
 ## 0.0.8
 
 - `whenOrElse` and `when` return Widgets

@@ -51,7 +51,7 @@ class _ExampleState extends State<Example> {
     await Future.delayed(const Duration(milliseconds: 500));
 
     setState(() {
-      _fetching = FetchingState.done(data: 'DONE IN STATE');
+      _fetching = FetchingState.done('DONE IN STATE');
     });
   }
 
@@ -62,7 +62,7 @@ class _ExampleState extends State<Example> {
     await Future.delayed(const Duration(milliseconds: 500));
 
     setState(() {
-      _fetching = FetchingState.error(error: 'Error IN STATE');
+      _fetching = FetchingState.error('Error IN STATE');
     });
   }
 
