@@ -1,3 +1,7 @@
+## 1.0.1
+
+- Add optional init parameters for `init` method
+
 ## 1.0.0
 
 - Remove named parameters

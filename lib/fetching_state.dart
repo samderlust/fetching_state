@@ -35,8 +35,11 @@ class FetchingState<T, E> {
   }
 
   /// Create new FetchingState instance, default status to [FetchingStatus.init]
-  factory FetchingState.init() =>
-      FetchingState(fetchingStatus: FetchingStatus.init);
+  factory FetchingState.init({T? data, E? error}) => FetchingState(
+        fetchingStatus: FetchingStatus.init,
+        data: data,
+        error: error,
+      );
 
   /// Create new FetchingState instance, default status to [FetchingStatus.loading]
   factory FetchingState.loading() =>
