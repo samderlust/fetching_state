@@ -17,8 +17,8 @@ A small package that helps easily to work with UI changes base on the state of f
 
 ## Features
 
-- Get rid of `if` `else` statements in UI
-- Decide what to display when fetching remote data in 4 states [`init`, `loading`,`done`, `error`]
+- Get rid of `if` `else` statements in UI when state change. Hence, cleaner UI code
+- Decide what to display when fetching remote data in 4 states [`init`, `loading`,`done`, `error`, `loadingMore`]
 - Option to pass the data or error objects in `onDone` and `onError`
 
 ## Getting started
@@ -42,57 +42,81 @@ import 'package:fetching_state/fetching_state.dart';
 
 see full example in `example` folder
 
+### changing state
+
 ```
-class Example extends StatefulWidget {
-  const Example({Key? key}) : super(key: key);
+  Future<void> getDone() async {
+    setState(() {
+      _fetching = FetchingState.loading();
+    });
+    await Future.delayed(const Duration(milliseconds: 500));
 
-  @override
-  _ExampleState createState() => _ExampleState();
-}
-
-class _ExampleState extends State<Example> {
-  late FetchingState<String, String> _fetching;
-  @override
-  void initState() {
-    _fetching = FetchingState.init();
-    super.initState();
+    setState(() {
+      _fetching = FetchingState.done('DONE IN STATE');
+    });
   }
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: Builder(
-                builder: (context) {
-                  return _fetching.when(
-                    onInit: () => const Text(
-                      'INIT',
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                    onDone: (text) => Text(
-                      text!,
-                      style: const TextStyle(color: Colors.green),
-                    ),
-                    onError: (error) => Text(
-                      error!,
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                    onLoading: () => const CircularProgressIndicator(),
-                  );
-                },
-              ),
-            ),
 
-          ],
-        ),
-      ),
-    );
+  Future<void> loadMoreText() async {
+    setState(() {
+      _fetching = _fetching.copyWithLoadingMore();
+    });
+
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    if (_fetching.data == null) {
+      setState(() {
+        _fetching = FetchingState.error('No current data');
+      });
+      return;
+    }
+
+    setState(() {
+      _fetching =
+          _fetching.copyWhenDone(data: '${_fetching.data} - extra text');
+    });
   }
-}
+
+  Future<void> getError() async {
+    setState(() {
+      _fetching = FetchingState.loading();
+    });
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    setState(() {
+      _fetching = FetchingState.error('Error IN STATE');
+    });
+  }
+
+  Future<void> getInit() async {
+    setState(() {
+      _fetching = FetchingState.loading();
+    });
+    await Future.delayed(const Duration(milliseconds: 500));
+    setState(() {
+      _fetching = FetchingState.init(data: '');
+    });
+  }
+```
+
+### capture change in UI
+
+```
+  return _fetching.when(
+    onInit: () => const Text(
+      'INIT',
+      style: TextStyle(color: Colors.blue),
+    ),
+    onDone: (text, isLoadingMore) => Text(
+      '${text ?? ''} ${isLoadingMore ? '....' : ''}',
+      style: const TextStyle(color: Colors.green),
+    ),
+    onError: (error) => Text(
+      error!.toString(),
+      style: const TextStyle(color: Colors.red),
+    ),
+    onLoading: () => const CircularProgressIndicator(),
+  );
+},
 ```
 
 ## Appreciate Your Feedbacks

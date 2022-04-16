@@ -1,3 +1,9 @@
+## 1.1.0 [BREAKING CHANGE]
+
+- No longer require [E] Error type. By default error type to [Object], which later can be cast to your own sake.
+- Added `loadingMore` state where user could you when fetching more item into current data. Useful when use with ListView, ect...
+- `onDone` is now `(T? data, bool isLoadingMore)` which provide current [data] and a boolean value indicate if the [status] is [loadingMore] add the same time. This help user can still display current list and the loading indicator if fetching more data is happening.
+
 ## 1.0.1
 
 - Add optional init parameters for `init` method

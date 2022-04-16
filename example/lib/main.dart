@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Fetchin State Example',
+      title: 'Fetching State Example',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         textTheme: const TextTheme(
@@ -37,7 +37,7 @@ class Example extends StatefulWidget {
 }
 
 class _ExampleState extends State<Example> {
-  late FetchingState<String, String> _fetching;
+  late FetchingState<String> _fetching;
   @override
   void initState() {
     _fetching = FetchingState.init();
@@ -52,6 +52,26 @@ class _ExampleState extends State<Example> {
 
     setState(() {
       _fetching = FetchingState.done('DONE IN STATE');
+    });
+  }
+
+  Future<void> loadMoreText() async {
+    setState(() {
+      _fetching = _fetching.copyWithLoadingMore();
+    });
+
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    if (_fetching.data == null) {
+      setState(() {
+        _fetching = FetchingState.error('No current data');
+      });
+      return;
+    }
+
+    setState(() {
+      _fetching =
+          _fetching.copyWhenDone(data: '${_fetching.data} - extra text');
     });
   }
 
@@ -72,7 +92,7 @@ class _ExampleState extends State<Example> {
     });
     await Future.delayed(const Duration(milliseconds: 500));
     setState(() {
-      _fetching = FetchingState.init();
+      _fetching = FetchingState.init(data: '');
     });
   }
 
@@ -92,12 +112,12 @@ class _ExampleState extends State<Example> {
                       'INIT',
                       style: TextStyle(color: Colors.blue),
                     ),
-                    onDone: (text) => Text(
-                      text!,
+                    onDone: (text, isLoadingMore) => Text(
+                      '${text ?? ''} ${isLoadingMore ? '....' : ''}',
                       style: const TextStyle(color: Colors.green),
                     ),
                     onError: (error) => Text(
-                      error!,
+                      error!.toString(),
                       style: const TextStyle(color: Colors.red),
                     ),
                     onLoading: () => const CircularProgressIndicator(),
@@ -111,6 +131,10 @@ class _ExampleState extends State<Example> {
             ElevatedButton(
               onPressed: getDone,
               child: const Text('Done'),
+            ),
+            ElevatedButton(
+              onPressed: loadMoreText,
+              child: const Text('Load more text'),
             ),
             ElevatedButton(
               onPressed: getError,
