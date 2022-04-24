@@ -1,3 +1,7 @@
+## 1.1.1
+
+- Fixed typo and methods
+
 ## 1.1.0 [BREAKING CHANGE]
 
 - No longer require [E] Error type. By default error type to [Object], which later can be cast to your own sake.

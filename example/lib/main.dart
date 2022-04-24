@@ -57,7 +57,7 @@ class _ExampleState extends State<Example> {
 
   Future<void> loadMoreText() async {
     setState(() {
-      _fetching = _fetching.copyWithLoadingMore();
+      _fetching = _fetching.copyWhenLoadingMore();
     });
 
     await Future.delayed(const Duration(milliseconds: 500));

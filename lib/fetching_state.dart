@@ -42,14 +42,10 @@ class FetchingState<T> {
   /// set status to [FetchingStatus.loadingMore]
   /// keep the current [data] and [error] or user can pass in those parameter.
   /// this is helpful when you want to add more data into current [data]
-  FetchingState<T> copyWithLoadingMore({
-    T? data,
-    Object? error,
-  }) {
+  FetchingState<T> copyWhenLoadingMore() {
     return FetchingState(
       fetchingStatus: FetchingStatus.loadingMore,
-      data: this.data,
-      error: this.error,
+      data: data,
     );
   }
 
@@ -59,13 +55,25 @@ class FetchingState<T> {
   /// this method should be use after loading more item into data
   FetchingState<T> copyWhenDone({
     T? data,
-    Object? error,
   }) {
     return FetchingState(
       fetchingStatus: FetchingStatus.done,
       data: data ?? this.data,
-      error: error ?? this.error,
     );
+  }
+
+  /// create new instance of FetchingState.
+  /// set status to [FetchingStatus.error]
+  /// keep the current [data] and [error] or user can pass in those parameter.
+  /// this method should be use after loading more item into data
+  FetchingState<T> copyWhenError({
+    T? data,
+    Object? error,
+  }) {
+    return FetchingState(
+        fetchingStatus: FetchingStatus.error,
+        error: error,
+        data: data ?? this.data);
   }
 
   /// Create new FetchingState instance, default status to [FetchingStatus.init]
