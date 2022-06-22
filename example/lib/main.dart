@@ -37,21 +37,21 @@ class Example extends StatefulWidget {
 }
 
 class _ExampleState extends State<Example> {
-  late FetchingState<String> _fetching;
+  late FetchingState<String?> _fetching;
   @override
   void initState() {
-    _fetching = FetchingState.init();
+    _fetching = FetchingState.init(data: null);
     super.initState();
   }
 
   Future<void> getDone() async {
     setState(() {
-      _fetching = FetchingState.loading();
+      _fetching = _fetching.copyWhenLoading();
     });
     await Future.delayed(const Duration(milliseconds: 500));
 
     setState(() {
-      _fetching = FetchingState.done('DONE IN STATE');
+      _fetching = _fetching.copyWhenDone(data: 'DONE IN STATE');
     });
   }
 
@@ -64,7 +64,7 @@ class _ExampleState extends State<Example> {
 
     if (_fetching.data == null) {
       setState(() {
-        _fetching = FetchingState.error('No current data');
+        _fetching = _fetching.copyWhenError(error: 'No current data');
       });
       return;
     }
@@ -77,18 +77,18 @@ class _ExampleState extends State<Example> {
 
   Future<void> getError() async {
     setState(() {
-      _fetching = FetchingState.loading();
+      _fetching = _fetching.copyWhenLoadingMore();
     });
     await Future.delayed(const Duration(milliseconds: 500));
 
     setState(() {
-      _fetching = FetchingState.error('Error IN STATE');
+      _fetching = _fetching.copyWhenError(error: 'Error IN STATE');
     });
   }
 
   Future<void> getInit() async {
     setState(() {
-      _fetching = FetchingState.loading();
+      _fetching = _fetching.copyWhenLoadingMore();
     });
     await Future.delayed(const Duration(milliseconds: 500));
     setState(() {

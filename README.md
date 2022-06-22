@@ -18,7 +18,7 @@ A small package that helps easily to work with UI changes base on the state of f
 ## Features
 
 - Get rid of `if` `else` statements in UI when state change. Hence, cleaner UI code
-- Decide what to display when fetching remote data in 4 states [`init`, `loading`,`done`, `error`, `loadingMore`]
+- Decide what to display when fetching remote data in 4 states `[init, loading,done, error, loadingMore]`
 - Option to pass the data or error objects in `onDone` and `onError`
 
 ## Getting started
@@ -45,27 +45,28 @@ see full example in `example` folder
 ### changing state
 
 ```
+
   Future<void> getDone() async {
     setState(() {
-      _fetching = FetchingState.loading();
+      _fetching = _fetching.copyWhenLoading();
     });
     await Future.delayed(const Duration(milliseconds: 500));
 
     setState(() {
-      _fetching = FetchingState.done('DONE IN STATE');
+      _fetching = _fetching.copyWhenDone(data: 'DONE IN STATE');
     });
   }
 
   Future<void> loadMoreText() async {
     setState(() {
-      _fetching = _fetching.copyWithLoadingMore();
+      _fetching = _fetching.copyWhenLoadingMore();
     });
 
     await Future.delayed(const Duration(milliseconds: 500));
 
     if (_fetching.data == null) {
       setState(() {
-        _fetching = FetchingState.error('No current data');
+        _fetching = _fetching.copyWhenError(error: 'No current data');
       });
       return;
     }
@@ -78,18 +79,18 @@ see full example in `example` folder
 
   Future<void> getError() async {
     setState(() {
-      _fetching = FetchingState.loading();
+      _fetching = _fetching.copyWhenLoadingMore();
     });
     await Future.delayed(const Duration(milliseconds: 500));
 
     setState(() {
-      _fetching = FetchingState.error('Error IN STATE');
+      _fetching = _fetching.copyWhenError(error: 'Error IN STATE');
     });
   }
 
   Future<void> getInit() async {
     setState(() {
-      _fetching = FetchingState.loading();
+      _fetching = _fetching.copyWhenLoadingMore();
     });
     await Future.delayed(const Duration(milliseconds: 500));
     setState(() {
@@ -101,7 +102,7 @@ see full example in `example` folder
 ### capture change in UI
 
 ```
-  return _fetching.when(
+ return _fetching.when(
     onInit: () => const Text(
       'INIT',
       style: TextStyle(color: Colors.blue),
@@ -116,7 +117,6 @@ see full example in `example` folder
     ),
     onLoading: () => const CircularProgressIndicator(),
   );
-},
 ```
 
 ## Appreciate Your Feedbacks

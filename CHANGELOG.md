@@ -1,3 +1,11 @@
+## 1.2.0 [BREAKING CHANGE]
+
+- For better use with null-safety, [T] data is now required. Users can set it to nullable
+- With the change above, the following constructors are removed:
+  - `FetchingState.loading()`
+  - `FetchingState.done([T? data])`
+  - `FetchingState.error([Object? error])`
+
 ## 1.1.1
 
 - Fixed typo and methods

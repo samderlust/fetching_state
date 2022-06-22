@@ -13,7 +13,7 @@ class FetchingState<T> {
   /// data that pass to `onDone`
   ///
   /// usage: `FetchingState.done({T? data})`
-  final T? data;
+  final T data;
 
   /// data that pass to `onError`
   ///
@@ -21,7 +21,7 @@ class FetchingState<T> {
   final Object? error;
 
   FetchingState({
-    this.data,
+    required this.data,
     this.error,
     required this.fetchingStatus,
   });
@@ -35,6 +35,17 @@ class FetchingState<T> {
       fetchingStatus: fetchingStatus,
       data: data ?? this.data,
       error: error ?? this.error,
+    );
+  }
+
+  /// create new instance of FetchingState.
+  /// set status to [FetchingStatus.loading]
+  /// keep the current [data] and [error] or user can pass in those parameter.
+  /// this is helpful when you want to add more data into current [data]
+  FetchingState<T> copyWhenLoading() {
+    return FetchingState(
+      fetchingStatus: FetchingStatus.loading,
+      data: data,
     );
   }
 
@@ -77,23 +88,23 @@ class FetchingState<T> {
   }
 
   /// Create new FetchingState instance, default status to [FetchingStatus.init]
-  factory FetchingState.init({T? data, Object? error}) => FetchingState(
+  factory FetchingState.init({required T data, Object? error}) => FetchingState(
         fetchingStatus: FetchingStatus.init,
         data: data,
         error: error,
       );
 
-  /// Create new FetchingState instance, default status to [FetchingStatus.loading]
-  factory FetchingState.loading() =>
-      FetchingState(fetchingStatus: FetchingStatus.loading);
+  // /// Create new FetchingState instance, default status to [FetchingStatus.loading]
+  // factory FetchingState.loading() =>
+  //     FetchingState(fetchingStatus: FetchingStatus.loading);
 
-  /// Create new FetchingState instance, default status to [FetchingStatus.done]
-  factory FetchingState.done([T? data]) =>
-      FetchingState(fetchingStatus: FetchingStatus.done, data: data);
+  // /// Create new FetchingState instance, default status to [FetchingStatus.done]
+  // factory FetchingState.done([T? data]) =>
+  //     FetchingState(fetchingStatus: FetchingStatus.done, data: data);
 
-  /// Create new FetchingState instance, default status to [FetchingStatus.error]
-  factory FetchingState.error([Object? error]) =>
-      FetchingState(fetchingStatus: FetchingStatus.error, error: error);
+  // /// Create new FetchingState instance, default status to [FetchingStatus.error]
+  // factory FetchingState.error([Object? error]) =>
+  //     FetchingState(fetchingStatus: FetchingStatus.error, error: error);
 
   /// Declare methods that return widgets base on [fetchingStatus]
   ///
