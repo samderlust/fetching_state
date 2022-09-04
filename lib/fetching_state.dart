@@ -1,6 +1,8 @@
+/// A small package that helps easily to work with UI changes base on the state of fetching remote data
 library fetching_state;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+part './src/load_status.dart';
 
 /// The predefined states when fetching data
 enum FetchingStatus { init, loading, done, error, loadingMore }

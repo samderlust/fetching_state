@@ -1,3 +1,9 @@
+## 2.0.0
+
+- Add `LoadStatus` mixin. A mixin to use with classes that have to do with loading status.
+- This mixin will attach `loadStatus` attribute into that class along with it are many helper methods for easily checking and setting current `loadStatus`.
+- There are also helper methods to render widget or perform action base on current `loadStatus` (when, whenOrElse, map, mapOrElse)
+
 ## 1.2.0 [BREAKING CHANGE]
 
 - For better use with null-safety, [T] data is now required. Users can set it to nullable
