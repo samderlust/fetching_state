@@ -42,7 +42,7 @@ import 'package:fetching_state/fetching_state.dart';
 
 see full example in `example` folder
 
-### changing state
+### 1 . FetchingState
 
 ```
 
@@ -99,7 +99,7 @@ see full example in `example` folder
   }
 ```
 
-### capture change in UI
+### 1.2 capture change in UI
 
 ```
  return _fetching.when(
@@ -117,6 +117,51 @@ see full example in `example` folder
     ),
     onLoading: () => const CircularProgressIndicator(),
   );
+```
+
+### 2. LoadStatus
+
+declare a class with `LoadStatus` mixin
+
+```
+class Counter with LoadStatusMixin {
+  final int value;
+
+  Counter(this.value);
+
+  Counter copyWith({int? value}) {
+    return Counter(value ?? this.value);
+  }
+}
+```
+
+manipulate state
+
+```
+
+  void increase() async {
+    setState(() {
+      _counter.setLoadStatusLoading();
+    });
+
+    await Future.delayed(const Duration(milliseconds: 500));
+    setState(() {
+      _counter = _counter.copyWith(value: _counter.value + 1);
+      _counter.setLoadStatusDone();
+    });
+  }
+```
+
+UI implement:
+
+```
+  return _counter.whenOrElse(
+      onLoading: () => const CircularProgressIndicator(),
+      onDone: (_) => Text(_counter.value.toString()),
+      onInit: () => const Text('Init'),
+      onError: () => const Text('Error'),
+      orElse: () => const Text('Nothing'),
+    );
 ```
 
 ## Appreciate Your Feedbacks
