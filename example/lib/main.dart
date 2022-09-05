@@ -1,5 +1,6 @@
-import 'package:fetching_state/fetching_state.dart';
 import 'package:flutter/material.dart';
+
+import 'package:fetching_state/fetching_state.dart';
 
 void main() {
   runApp(
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Fetching State Example',
+      title: 'Fetching State FetchingStateExample',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         textTheme: const TextTheme(
@@ -24,19 +25,19 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const Example(),
+      home: const FetchingStateExample(),
     );
   }
 }
 
-class Example extends StatefulWidget {
-  const Example({Key? key}) : super(key: key);
+class FetchingStateExample extends StatefulWidget {
+  const FetchingStateExample({Key? key}) : super(key: key);
 
   @override
-  _ExampleState createState() => _ExampleState();
+  _FetchingStateExampleState createState() => _FetchingStateExampleState();
 }
 
-class _ExampleState extends State<Example> {
+class _FetchingStateExampleState extends State<FetchingStateExample> {
   late FetchingState<String?> _fetching;
   @override
   void initState() {
@@ -104,6 +105,7 @@ class _ExampleState extends State<Example> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Spacer(),
             Center(
               child: Builder(
                 builder: (context) {
@@ -144,6 +146,92 @@ class _ExampleState extends State<Example> {
               onPressed: getInit,
               child: const Text('Init'),
             ),
+            const Spacer(),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * .8,
+              height: 60,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => const LoadStatusExample()),
+                  );
+                },
+                child: const Text('Load Status'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// I know this is a lame example.
+// But hope it'll give you an idea of how of this mixin works
+class Counter with LoadStatusMixin {
+  final int value;
+
+  Counter(this.value);
+
+  Counter copyWith({int? value}) {
+    return Counter(value ?? this.value);
+  }
+}
+
+class LoadStatusExample extends StatefulWidget {
+  const LoadStatusExample({Key? key}) : super(key: key);
+
+  @override
+  State<LoadStatusExample> createState() => _LoadStatusExampleState();
+}
+
+class _LoadStatusExampleState extends State<LoadStatusExample> {
+  Counter _counter = Counter(1);
+
+  void increase() async {
+    setState(() {
+      _counter.setLoadStatusLoading();
+    });
+
+    await Future.delayed(const Duration(milliseconds: 500));
+    setState(() {
+      _counter = _counter.copyWith(value: _counter.value + 1);
+      _counter.setLoadStatusDone();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Load Status Example'),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            const Spacer(),
+            Builder(
+              builder: (context) {
+                return _counter.whenOrElse(
+                  onLoading: () => const CircularProgressIndicator(),
+                  onDone: (_) => Text(_counter.value.toString()),
+                  onInit: () => const Text('Init'),
+                  onError: () => const Text('Error'),
+                  orElse: () => const Text('Nothing'),
+                );
+              },
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: increase,
+              child: const Text('Add'),
+            ),
+            const Spacer(),
           ],
         ),
       ),
