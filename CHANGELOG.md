@@ -1,3 +1,7 @@
+## 2.0.1
+
+- update example and documents
+
 ## 2.0.0
 
 - Add `LoadStatus` mixin. A mixin to use with classes that have to do with loading status.
