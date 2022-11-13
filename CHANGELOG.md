@@ -1,3 +1,11 @@
+## 2.0.3
+
+- small fixes
+
+## 2.0.2
+
+- in [FetchingState] make `T? data` optional.
+
 ## 2.0.1
 
 - update example and documents

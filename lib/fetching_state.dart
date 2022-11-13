@@ -15,7 +15,7 @@ class FetchingState<T> {
   /// data that pass to `onDone`
   ///
   /// usage: `FetchingState.done({T? data})`
-  final T data;
+  final T? data;
 
   /// data that pass to `onError`
   ///
@@ -23,7 +23,7 @@ class FetchingState<T> {
   final Object? error;
 
   FetchingState({
-    required this.data,
+    this.data,
     this.error,
     required this.fetchingStatus,
   });
@@ -96,17 +96,17 @@ class FetchingState<T> {
         error: error,
       );
 
-  // /// Create new FetchingState instance, default status to [FetchingStatus.loading]
-  // factory FetchingState.loading() =>
-  //     FetchingState(fetchingStatus: FetchingStatus.loading);
+  /// Create new FetchingState instance, default status to [FetchingStatus.loading]
+  factory FetchingState.loading() =>
+      FetchingState(fetchingStatus: FetchingStatus.loading);
 
-  // /// Create new FetchingState instance, default status to [FetchingStatus.done]
-  // factory FetchingState.done([T? data]) =>
-  //     FetchingState(fetchingStatus: FetchingStatus.done, data: data);
+  /// Create new FetchingState instance, default status to [FetchingStatus.done]
+  factory FetchingState.done([T? data]) =>
+      FetchingState(fetchingStatus: FetchingStatus.done, data: data);
 
-  // /// Create new FetchingState instance, default status to [FetchingStatus.error]
-  // factory FetchingState.error([Object? error]) =>
-  //     FetchingState(fetchingStatus: FetchingStatus.error, error: error);
+  /// Create new FetchingState instance, default status to [FetchingStatus.error]
+  factory FetchingState.error([Object? error]) =>
+      FetchingState(fetchingStatus: FetchingStatus.error, error: error);
 
   /// Declare methods that return widgets base on [fetchingStatus]
   ///

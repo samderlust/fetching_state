@@ -1,6 +1,6 @@
 name: fetching_state
 description: A small package that helps easily to work with UI changes base on the state of fetching remote data
-version: 2.0.1
+version: 2.0.3
 homepage: https://github.com/samderlust/fetching_state
 
 environment:
