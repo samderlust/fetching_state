@@ -1,3 +1,9 @@
+## 3.0.0
+
+- remove `map` methods
+- remove `flutter` dependency
+- add [LoadingState] which is similar to [FetchingState] but without `data`. Use when you don't need to attach a data object in to the [FetchingState]
+
 ## 2.0.3
 
 - small fixes

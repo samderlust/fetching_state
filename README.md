@@ -164,6 +164,10 @@ UI implement:
     );
 ```
 
+### 2. LoadingState
+
+similar to [FetchingState] but not data object required. Use when you just need plain status of the job.
+
 ## Appreciate Your Feedbacks
 
 If you find anything need to be improve or want to request a feature. Please go ahead and create an issue in the [Github](https://github.com/samderlust/fetching_state) repo
