@@ -1,6 +1,8 @@
 import 'enums.dart';
 
 /// LoadingState allow you to handle UI base on the current state of data fetching
+/// unlike [FetchingState] this class doesn't required a data object
+/// for use when you just want to track the state of a fetching job
 class LoadingState {
   /// fetching status [LoadState]
   final LoadState fetchingStatus;

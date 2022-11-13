@@ -1,6 +1,8 @@
 import 'enums.dart';
 
 /// FetchingState allow you to handle UI base on the current state of data fetching
+/// Use this one when you want to attach your data object into the state.
+/// call [FetchingState.data] to get your object data
 class FetchingState<T> {
   /// fetching status [LoadState]
   final LoadState fetchingStatus;
@@ -8,7 +10,7 @@ class FetchingState<T> {
   /// data that pass to `onDone`
   ///
   /// usage: `FetchingState.done({T? data})`
-  final T? data;
+  final T data;
 
   /// data that pass to `onError`
   ///
@@ -16,7 +18,7 @@ class FetchingState<T> {
   final Object? error;
 
   FetchingState({
-    this.data,
+    required this.data,
     this.error,
     required this.fetchingStatus,
   });
@@ -86,18 +88,6 @@ class FetchingState<T> {
         data: data,
         error: error,
       );
-
-  /// Create new FetchingState instance, default status to [LoadState.loading]
-  factory FetchingState.loading() =>
-      FetchingState(fetchingStatus: LoadState.loading);
-
-  /// Create new FetchingState instance, default status to [LoadState.done]
-  factory FetchingState.done([T? data]) =>
-      FetchingState(fetchingStatus: LoadState.done, data: data);
-
-  /// Create new FetchingState instance, default status to [LoadState.error]
-  factory FetchingState.error([Object? error]) =>
-      FetchingState(fetchingStatus: LoadState.error, error: error);
 
   /// Declare methods that return widgets base on [fetchingStatus]
   ///

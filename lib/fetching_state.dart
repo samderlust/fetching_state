@@ -3,3 +3,4 @@ library fetching_state;
 
 export 'src/fetching_state_base.dart';
 export 'src/load_status.dart';
+export 'src/loading_state.dart';

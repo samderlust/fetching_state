@@ -1,19 +1,14 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
+<font size="6" color="red">**BREAKING CHANGES in version 3: Please read to the changelog**</font>
 
 # Fetching State
 
 A small package that helps easily to work with UI changes base on the state of fetching remote data
+
+## Table of content
+
+1.  [FetchingState](#fetchingstate)
+2.  [LoadStatus](#loadstatus)
+3.  [LoadingState](#loadingstate)
 
 ## Features
 
@@ -42,7 +37,7 @@ import 'package:fetching_state/fetching_state.dart';
 
 see full example in `example` folder
 
-### 1 . FetchingState
+### <a name="fetchingstate"></a>1. FetchingState
 
 ```
 
@@ -119,7 +114,7 @@ see full example in `example` folder
   );
 ```
 
-### 2. LoadStatus
+### <a name="loadstatus"></a>2. LoadStatus
 
 declare a class with `LoadStatus` mixin
 
@@ -164,7 +159,7 @@ UI implement:
     );
 ```
 
-### 2. LoadingState
+### <a name="loadingstate"></a>3. LoadingState
 
 similar to [FetchingState] but not data object required. Use when you just need plain status of the job.
 
