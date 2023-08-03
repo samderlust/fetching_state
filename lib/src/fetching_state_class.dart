@@ -1,20 +1,23 @@
+/// FetchingState allow you to handle UI base on the current state of data fetching
+/// Use this one when you want to attach your data object into the state.
+
 sealed class FetchingState<T> {
-  factory FetchingState.done(T value) => _FetchingStateDone(value);
-  factory FetchingState.loadMore(T value) => _FetchingStateLoadMore(value);
+  factory FetchingState.done(T data) => _FetchingStateDone(data);
+  factory FetchingState.loadMore(T data) => _FetchingStateLoadMore(data);
   factory FetchingState.init() => _FetchingStateInit();
   factory FetchingState.loading() => _FetchingStateLoading();
   factory FetchingState.error(Object error) => _FetchingStateError(error);
 }
 
 final class _FetchingStateDone<T> implements FetchingState<T> {
-  final T value;
+  final T data;
 
-  _FetchingStateDone(this.value);
+  _FetchingStateDone(this.data);
 }
 
 final class _FetchingStateLoadMore<T> implements FetchingState<T> {
-  final T value;
-  _FetchingStateLoadMore(this.value);
+  final T data;
+  _FetchingStateLoadMore(this.data);
 }
 
 final class _FetchingStateInit<T> implements FetchingState<T> {
@@ -41,8 +44,8 @@ extension FetchingStateX<T> on FetchingState<T> {
     return switch (this) {
       _FetchingStateInit() => onInit(),
       _FetchingStateLoading() => onLoading(),
-      _FetchingStateDone(:final value) => onDone(value, false),
-      _FetchingStateLoadMore(:final value) => onDone(value, true),
+      _FetchingStateDone(:final data) => onDone(data, false),
+      _FetchingStateLoadMore(:final data) => onDone(data, true),
       _FetchingStateError(:final error) => onError(error),
     };
   }
@@ -59,10 +62,10 @@ extension FetchingStateX<T> on FetchingState<T> {
     return switch (this) {
       _FetchingStateInit() => onInit != null ? onInit() : orElse(),
       _FetchingStateLoading() => onLoading != null ? onLoading() : orElse(),
-      _FetchingStateLoadMore(:final value) =>
-        onDone != null ? onDone(value, isMore: true) : orElse(),
-      _FetchingStateDone(:final value) =>
-        onDone != null ? onDone(value) : orElse(),
+      _FetchingStateLoadMore(:final data) =>
+        onDone != null ? onDone(data, isMore: true) : orElse(),
+      _FetchingStateDone(:final data) =>
+        onDone != null ? onDone(data) : orElse(),
       _FetchingStateError(:final error) =>
         onError != null ? onError(error) : orElse(),
     };
