@@ -1,5 +1,3 @@
-<font size="6" color="red">**BREAKING CHANGES in version 3: Please read to the changelog**</font>
-
 # Fetching State
 
 A small package that helps easily to work with UI changes base on the state of fetching remote data
@@ -40,56 +38,54 @@ see full example in `example` folder
 ### <a name="fetchingstate"></a>1. FetchingState
 
 ```
-
-  Future<void> getDone() async {
+ Future<void> getDone() async {
     setState(() {
-      _fetching = _fetching.copyWhenLoading();
+      _fetching = FetchingState.loading();
     });
     await Future.delayed(const Duration(milliseconds: 500));
 
     setState(() {
-      _fetching = _fetching.copyWhenDone(data: 'DONE IN STATE');
+      _fetching = FetchingState.done('DONE IN STATE');
     });
   }
 
   Future<void> loadMoreText() async {
-    setState(() {
-      _fetching = _fetching.copyWhenLoadingMore();
-    });
-
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    if (_fetching.data == null) {
+    if (_fetching.value == null) {
       setState(() {
-        _fetching = _fetching.copyWhenError(error: 'No current data');
+        _fetching = FetchingState.error('No current data');
       });
       return;
     }
 
     setState(() {
-      _fetching =
-          _fetching.copyWhenDone(data: '${_fetching.data} - extra text');
+      _fetching = FetchingState.loadMore(_fetching.value);
+    });
+
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    setState(() {
+      _fetching = FetchingState.done('${_fetching.value} - extra text');
     });
   }
 
   Future<void> getError() async {
     setState(() {
-      _fetching = _fetching.copyWhenLoadingMore();
+      _fetching = FetchingState.loading();
     });
     await Future.delayed(const Duration(milliseconds: 500));
 
     setState(() {
-      _fetching = _fetching.copyWhenError(error: 'Error IN STATE');
+      _fetching = FetchingState.error('Error IN STATE');
     });
   }
 
   Future<void> getInit() async {
     setState(() {
-      _fetching = _fetching.copyWhenLoadingMore();
+      _fetching = FetchingState.loading();
     });
     await Future.delayed(const Duration(milliseconds: 500));
     setState(() {
-      _fetching = FetchingState.init(data: '');
+      _fetching = FetchingState.init();
     });
   }
 ```

@@ -41,59 +41,58 @@ class _FetchingStateExampleState extends State<FetchingStateExample> {
   late FetchingState<String?> _fetching;
   @override
   void initState() {
-    _fetching = FetchingState.init(data: null);
+    _fetching = FetchingState.init();
     super.initState();
   }
 
   Future<void> getDone() async {
     setState(() {
-      _fetching = _fetching.copyWhenLoading();
+      _fetching = FetchingState.loading();
     });
     await Future.delayed(const Duration(milliseconds: 500));
 
     setState(() {
-      _fetching = _fetching.copyWhenDone(data: 'DONE IN STATE');
+      _fetching = FetchingState.done('DONE IN STATE');
     });
   }
 
   Future<void> loadMoreText() async {
-    setState(() {
-      _fetching = _fetching.copyWhenLoadingMore();
-    });
-
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    if (_fetching.data == null) {
+    if (_fetching.value == null) {
       setState(() {
-        _fetching = _fetching.copyWhenError(error: 'No current data');
+        _fetching = FetchingState.error('No current data');
       });
       return;
     }
 
     setState(() {
-      _fetching =
-          _fetching.copyWhenDone(data: '${_fetching.data} - extra text');
+      _fetching = FetchingState.loadMore(_fetching.value);
+    });
+
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    setState(() {
+      _fetching = FetchingState.done('${_fetching.value} - extra text');
     });
   }
 
   Future<void> getError() async {
     setState(() {
-      _fetching = _fetching.copyWhenLoadingMore();
+      _fetching = FetchingState.loading();
     });
     await Future.delayed(const Duration(milliseconds: 500));
 
     setState(() {
-      _fetching = _fetching.copyWhenError(error: 'Error IN STATE');
+      _fetching = FetchingState.error('Error IN STATE');
     });
   }
 
   Future<void> getInit() async {
     setState(() {
-      _fetching = _fetching.copyWhenLoadingMore();
+      _fetching = FetchingState.loading();
     });
     await Future.delayed(const Duration(milliseconds: 500));
     setState(() {
-      _fetching = FetchingState.init(data: '');
+      _fetching = FetchingState.init();
     });
   }
 
@@ -119,7 +118,7 @@ class _FetchingStateExampleState extends State<FetchingStateExample> {
                       style: const TextStyle(color: Colors.green),
                     ),
                     onError: (error) => Text(
-                      error!.toString(),
+                      error.toString(),
                       style: const TextStyle(color: Colors.red),
                     ),
                     onLoading: () => const CircularProgressIndicator(),

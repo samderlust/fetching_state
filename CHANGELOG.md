@@ -1,3 +1,8 @@
+## 4.0.0-dev.1
+
+- required dart version >= 3.0.0
+- refactor `FetchingState`
+
 ## 3.0.0
 
 - remove `map` methods
